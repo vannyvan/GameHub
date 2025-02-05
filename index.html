@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Your Ultimate Gaming Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --purple-glow: #9d4edd;
+            --purple-dark: #3c096c;
+            --neon-blue: #4cc9f0;
+            --neon-pink: #f72585;
+        }
+
+        body {
+            background-color: #0a0014;
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .purple-glow {
+            box-shadow: 0 0 15px var(--purple-glow);
+            transition: all 0.3s ease;
+        }
+
+        .purple-glow:hover {
+            box-shadow: 0 0 25px var(--purple-glow);
+            transform: translateY(-2px);
+        }
+
+        .game-card {
+            background: rgba(61, 9, 108, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--purple-glow);
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--purple-glow);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--purple-glow), var(--purple-dark));
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--purple-glow);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--neon-pink), var(--purple-glow), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(157, 78, 221, 0.3), -2px -2px 4px rgba(76, 201, 240, 0.3);
+        }
+
+        .game-image {
+            background-size: cover;
+            background-position: center;
+            aspect-ratio: 16/9;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .game-image {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .game-image {
+                height: 150px;
+            }
+        }
+
+
+        .game-card-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 200px);
+            justify-content: space-between;
+        }
+
+        .hero-image {
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .rounded-xl {
+            border-radius: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+        }
+
+        .testimonial {
+            background: rgba(61, 9, 108, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.4);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--neon-pink);
+        }
+
+        footer {
+            background: var(--purple-dark);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .streamer-card {
+            background: rgba(61, 9, 108, 0.3);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .streamer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.4);
+        }
+
+        .setup-image {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .hero-image {
+                min-height: 300px;
+                max-width: 100%;
+                height: auto;
+                margin: 10px 0;
+            }
+
+            .container {
+                text-align: center;
+            }
+
+            .game-card,
+            .testimonial {
+                text-align: center;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .scale-in.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gradient-text.display-4 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .h1.gradient-text {
+            font-size: 2.5rem;
+        }
+
+        .container h2.gradient-text:not(.display-4) {
+            font-size: 2.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .container h2.gradient-text:not(.display-4) {
+            font-size: 2.25rem;
+        }
+
+        .h2.gradient-text {
+            font-size: 2rem;
+        }
+
+        @media (max-width: 576px) {
+            .gradient-text.display-4 {
+                font-size: 2.5rem;
+            }
+
+            .lead {
+                font-size: 1rem;
+            }
+
+            .btn-lg {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .hero-image {
+                margin: 10px 0;
+            }
+
+            .game-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <canvas id="bgCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-4 py-3 sticky-top" style="background-color: var(--purple-dark);">
+        <div class="container-fluid">
+            <a class="navbar-brand gradient-text text-2xl font-bold" href="#">GameHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link mx-2" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link mx-2" href="#games">Games</a></li>
+                    <li class="nav-item"><a class="nav-link mx-2" href="#community">Community</a></li>
+                    <li class="nav-item"><a class="nav-link mx-2" href="#tournaments">Tournaments</a></li>
+                    <li class="nav-item"><a class="nav-link mx-2" href="#store">Store</a></li>
+                    <li class="nav-item"><a class="nav-link mx-2" href="#support">Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="container-fluid py-5 px-4" id="home">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-6 col-md-8 px-4 text-center text-lg-start fade-in">
+                <h1 class="display-4 fw-bold mb-4 gradient-text">Welcome to GameHub</h1>
+                <p class="lead mb-4">Experience gaming like never before with our immersive platform. Join millions of
+                    players worldwide and embark on epic adventures!</p>
+                <button class="btn btn-lg purple-glow px-4 py-2 rounded-xl mb-2 me-2"
+                    style="background: var(--purple-dark);">
+                    Play Now
+                </button>
+                <button class="btn btn-lg px-4 py-2 rounded-xl mb-2" style="background: var(--neon-blue);">
+                    Learn More
+                </button>
+            </div>
+            <div class="col-lg-4 col-md-8 fade-in">
+                <div class="hero-image">
+                    <img src="imgs/hd-valorant-game-omen-character-player-png-733961695115637mjmuwerdpd-removebg.png"
+                        alt="Featured Game Artwork" class="img-fluid rounded-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Games -->
+    <section class="container py-5 px-4" id="games">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Featured Games</h2>
+        <div class="row g-4">
+            <!-- Game Card 1 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/epic adv.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Epic Adventure</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Action</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 2 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/spcae warriors.webp" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Space Warriors</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 60%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Strategy</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 3 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/Mystic Realms.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Mystic Realms</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 90%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">RPG</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 4 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/racing legends.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Racing Legends</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 85%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Racing</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 5 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/Puzzle Master.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Puzzle Master</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 70%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Puzzle</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 6 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/state.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">State Survival</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 80%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Survival</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 7 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/Cyber Nexus.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Cyber Nexus</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 65%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Sci-Fi</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Game Card 8 -->
+            <div class="col-md-6 col-lg-3 fade-in">
+                <div class="game-card rounded-xl p-3 h-100 d-flex flex-column">
+                    <div class="game-image mb-3 d-flex align-items-center justify-content-center">
+                        <img src="imgs/Medieval Conquest.jpg" alt="Epic Adventure">
+                    </div>
+                    <div class="game-card-content flex-grow-1 d-flex flex-column justify-content-between">
+                        <h3 class="h5 mb-2">Medieval Conquest</h3>
+                        <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 55%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge purple-glow rounded-xl">Strategy</span>
+                            <button class="btn btn-sm purple-glow rounded-xl">Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game of the Month Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Game of the Month</h2>
+        <div class="row align-items-center">
+            <div class="col-md-6 fade-in pe-md-5">
+                <img src="imgs/Cyber Nexus neon.jpg" alt="Game of the Month" class="img-fluid rounded-xl">
+            </div>
+            <div class="col-md-6 fade-in">
+                <h3 class="h2 mb-4 gradient-text text-shadow">Cyber Nexus: Neon Revolution</h3>
+                <p class="lead mb-4">Dive into the futuristic world of Cyber Nexus, where neon-lit streets and advanced
+                    technology collide. Battle against rival factions, upgrade your cybernetic implants, and uncover a
+                    conspiracy that threatens the entire city.</p>
+                <ul class="list-unstyled mb-4">
+                    <li><i class="fas fa-check text-success me-2"></i> Immersive open-world gameplay</li>
+                    <li><i class="fas fa-check text-success me-2"></i> Customizable character builds</li>
+                    <li><i class="fas fa-check text-success me-2"></i> Stunning ray-traced graphics</li>
+                    <li><i class="fas fa-check text-success me-2"></i> Multiplayer co-op missions</li>
+                </ul>
+                <button class="btn btn-lg purple-glow px-4 py-2 rounded-xl" style="background: var(--purple-dark);">
+                    Play Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Why Choose GameHub?</h2>
+        <div class="row g-4">
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-globe feature-icon"></i>
+                    <h3 class="h4 mb-3">Global Community</h3>
+                    <p>Connect with millions of players worldwide and make new friends.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-trophy feature-icon"></i>
+                    <h3 class="h4 mb-3">Competitive Tournaments</h3>
+                    <p>Participate in exciting tournaments and win amazing prizes.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-headset feature-icon"></i>
+                    <h3 class="h4 mb-3">24/7 Support</h3>
+                    <p>Our dedicated support team is always here to help you.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <h3 class="h4 mb-3">Instant Gaming</h3>
+                    <p>Jump into games instantly with our cutting-edge cloud gaming technology.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-users feature-icon"></i>
+                    <h3 class="h4 mb-3">Team Play</h3>
+                    <p>Form or join teams and compete in multiplayer challenges.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <h3 class="h4 mb-3">Secure Platform</h3>
+                    <p>Play with peace of mind on our secure and fair gaming platform.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Streamers Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Featured Streamers</h2>
+        <div class="row g-4">
+            <div class="col-md-3 fade-in">
+                <div class="streamer-card">
+                    <img src="imgs/neon ninga.avif" alt="Streamer 1" class="img-fluid">
+                    <div class="p-3">
+                        <h3 class="h5 mb-2">NeonNinja</h3>
+                        <p class="mb-2">Cyber Nexus Pro Player</p>
+                        <a href="#" class="btn btn-sm purple-glow">Watch Stream</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="streamer-card">
+                    <img src="imgs/PixelQueen.jpg" alt="Streamer 2" class="img-fluid">
+                    <div class="p-3">
+                        <h3 class="h5 mb-2">PixelQueen</h3>
+                        <p class="mb-2">Indie Game Enthusiast</p>
+                        <a href="#" class="btn btn-sm purple-glow">Watch Stream</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="streamer-card">
+                    <img src="imgs/EpicWarrior.webp" alt="Streamer 3" class="img-fluid">
+                    <div class="p-3">
+                        <h3 class="h5 mb-2">EpicWarrior</h3>
+                        <p class="mb-2">Strategy Game Master</p>
+                        <a href="#" class="btn btn-sm purple-glow">Watch Stream</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="streamer-card">
+                    <img src="imgs/SpeedDemon.png" alt="Streamer 4" class="img-fluid">
+                    <div class="p-3">
+                        <h3 class="h5 mb-2">SpeedDemon</h3>
+                        <p class="mb-2">Racing Game Champion</p>
+                        <a href="#" class="btn btn-sm purple-glow">Watch Stream</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">GameHub by the Numbers</h2>
+        <div class="row g-4">
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center">
+                    <h3 class="gradient-text mb-3">Players Online</h3>
+                    <p class="display-6">1,234,567</p>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center">
+                    <h3 class="gradient-text mb-3">Active Games</h3>
+                    <p class="display-6">5,678</p>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center">
+                    <h3 class="gradient-text mb-3">Total Players</h3>
+                    <p class="display-6">50M+</p>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center">
+                    <h3 class="gradient-text mb-3">Countries</h3>
+                    <p class="display-6">190+</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">What Our Players Say</h2>
+        <div class="row g-4">
+            <div class="col-md-6 fade-in">
+                <div class="testimonial">
+                    <p>"GameHub has completely transformed my gaming experience. The community is amazing, and the
+                        variety of games is unmatched!"</p>
+                    <p class="testimonial-author">- Sarah J.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="testimonial">
+                    <p>"I've won several tournaments on GameHub. The competitive scene here is thrilling and rewarding!"
+                    </p>
+                    <p class="testimonial-author">- Mike R.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="testimonial">
+                    <p>"The customer support on GameHub is top-notch. They're always quick to resolve any issues I
+                        have."</p>
+                    <p class="testimonial-author">- Emily T.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="testimonial">
+                    <p>"GameHub's cloud gaming feature lets me play high-end games on my old laptop. It's incredible!"
+                    </p>
+                    <p class="testimonial-author">- Alex M.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gaming Setup Showcase Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Gaming Setup Showcase</h2>
+        <div class="row g-4">
+            <div class="col-md-4 fade-in">
+                <div class="setup-image">
+                    <img src="imgs/Neon Battlestation.webp" alt="Gaming Setup 1" class="img-fluid">
+                </div>
+                <h3 class="h5 mt-3 mb-2">Neon Battlestation</h3>
+                <p>A sleek, RGB-lit setup perfect for intense gaming sessions.</p>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="setup-image">
+                    <img src="imgs/Clean and efficient setup for the focused gamer..jpg" alt="Gaming Setup 2" class="img-fluid">
+                </div>
+                <h3 class="h5 mt-3 mb-2">Minimalist Pro</h3>
+                <p>Clean and efficient setup for the focused gamer.</p>
+            </div>
+            <div class="col-md-4 fade-in">
+                <div class="setup-image">
+                    <img src="imgs/Streamer's Paradise.jpg" alt="Gaming Setup 3" class="img-fluid">
+                </div>
+                <h3 class="h5 mt-3 mb-2">Streamer's Paradise</h3>
+                <p>Multi-monitor setup optimized for gaming and streaming.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Upcoming Events</h2>
+        <div class="row g-4">
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">Summer Gaming Festival</h3>
+                    <p class="text-[#4cc9f0] mb-2">July 15-17, 2023</p>
+                    <p>Join us for three days of non-stop gaming action!</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">Esports World Championship</h3>
+                    <p class="text-[#4cc9f0] mb-2">August 5-6, 2023</p>
+                    <p>Watch the best players compete for the world title.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">GameHub Con</h3>
+                    <p class="text-[#4cc9f0] mb-2">September 22-24, 2023</p>
+                    <p>Meet your favorite streamers and try out upcoming games.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">Indie Game Showcase</h3>
+                    <p class="text-[#4cc9f0] mb-2">October 10, 2023</p>
+                    <p>Discover the next big hit from independent developers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game News Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Latest Gaming News</h2>
+        <div class="row g-4">
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">New Battle Royale Mode Coming to Epic Adventure</h3>
+                    <p class="text-[#4cc9f0] mb-2">June 1, 2023</p>
+                    <p>Get ready for an intense 100-player showdown!</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">Mystic Realms Expansion Pack Announced </h3>
+                    <p class="text-[#4cc9f0] mb-2">June 5, 2023</p>
+                    <p>Explore new magical lands and face powerful bosses.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">GameHub Partners with Major Game Studios</h3>
+                    <p class="text-[#4cc9f0] mb-2">June 10, 2023</p>
+                    <p>Expect exclusive content and early access to upcoming titles.</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in">
+                <div class="game-card rounded-xl p-4">
+                    <h3 class="h4 mb-3">Mobile Version of Racing Legends Launches Next Month</h3>
+                    <p class="text-[#4cc9f0] mb-2">June15, 2023</p>
+                    <p>Take the race with you wherever you go!</p>
+                </div>
+            </div>
+        </div>
+    </section> <!-- Game Achievements Section -->
+    <section class="container py-5 px-4">
+        <h2 class="text-center mb-5 gradient-text display-4 fw-bold">Game Achievements</h2>
+        <div class="row g-4">
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-medal feature-icon" style="color: var(--neon-pink);"></i>
+                    <h3 class="h4 mb-3">Epic Adventurer</h3>
+                    <p>Complete 100 quests in Epic Adventure</p>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-rocket feature-icon" style="color: var(--neon-blue);"></i>
+                    <h3 class="h4 mb-3">Space Conqueror</h3>
+                    <p>Defeat the final boss in Space Warriors</p>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-crown feature-icon" style="color: var(--purple-glow);"></i>
+                    <h3 class="h4 mb-3">Racing Legend</h3>
+                    <p>Win 50 races in Racing Legends</p>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 fade-in">
+                <div class="game-card rounded-xl p-4 text-center h-100">
+                    <i class="fas fa-puzzle-piece feature-icon" style="color: var(--neon-pink);"></i>
+                    <h3 class="h4 mb-3">Puzzle Master</h3>
+                    <p>Solve 1000 puzzles in Puzzle Master</p>
+                    <div class="progress mt-3" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="container py-5 px-4">
+        <div class="game-card rounded-xl p-5 scale-in">
+            <h2 class="gradient-text mb-4">Ready to Join the Adventure?</h2>
+            <p class="lead mb-4">Sign up now and get 500 bonus coins to start your journey!</p>
+            <button class="btn btn-lg purple-glow px-5 py-3 rounded-xl" style="background: var(--purple-dark);">
+                Sign Up Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start">
+        <div class="container p-4 px4">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase gradient-text">GameHub</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!" class="text-white">About Us</a></li>
+                        <li><a href="#!" class="text-white">Careers</a></li>
+                        <li><a href="#!" class="text-white">Press</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase gradient-text">Support</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!" class="text-white">Help Center</a></li>
+                        <li><a href="#!" class="text-white">Safety Center</a></li>
+                        <li><a href="#!" class="text-white">Community Guidelines</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase gradient-text">Legal</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!" class="text-white">Terms of Service</a></li>
+                        <li><a href="#!" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#!" class="text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase gradient-text">Follow Us</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#!" class="text-white"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#!" class="text-white"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#!" class="text-white"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2025 GameHub. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in, .scale-in').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+    <script>
+        document.querySelectorAll('.navbar-nav>li>a').forEach(item => {
+            item.addEventListener('click', () => {
+                const navbarToggler = document.querySelector('.navbar-toggler');
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (window.getComputedStyle(navbarToggler).display !== 'none') {
+                    navbarToggler.click();
+                }
+            });
+        });
+
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(157, 78, 221, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        init();
+        animate();
+    </script>
+</body>
+
+</html>
